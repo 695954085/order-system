@@ -1,12 +1,19 @@
-import { Model, Table, Column, HasMany, DataType, NotNull } from 'sequelize-typescript';
+import {
+  Model,
+  Table,
+  Column,
+  HasMany,
+  DataType,
+  AllowNull,
+} from 'sequelize-typescript';
 import { Order } from '../order/order.entity';
 
 @Table
 export class Customer extends Model<Customer> {
-  @Column({ primaryKey: true })
+  @Column({ primaryKey: true, autoIncrement: true })
   cust_id: number;
 
-  @NotNull
+  @AllowNull(false)
   @Column(DataType.CHAR(50))
   cust_name: string;
 

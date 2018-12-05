@@ -5,10 +5,12 @@ import { Customer } from '../customer/customer.entity';
 import { Order } from '../order/order.entity';
 import { OrderItem } from '../order/orderitem.entity';
 import { ProductNote } from '../product/productnote.entity';
+import { Staff } from '../staff/staff.entity';
+import { DATABASE_PROVIDER_TOKEN } from '../config/constants';
 
 export const dataProviders = [
   {
-    provide: 'SequlizeToken',
+    provide: DATABASE_PROVIDER_TOKEN,
     useFactory: async () => {
       const sequelize = new Sequelize({
         dialect: 'mysql',
@@ -18,7 +20,7 @@ export const dataProviders = [
         password: 'root',
         database: 'order',
       });
-      sequelize.addModels([Vendor, Product, Customer, Order, OrderItem, ProductNote]);
+      sequelize.addModels([Vendor, Product, Customer, Order, OrderItem, ProductNote, Staff]);
       await sequelize.sync();
       return sequelize;
     },
