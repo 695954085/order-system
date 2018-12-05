@@ -6,7 +6,7 @@ import {
   DataType,
   BelongsToMany,
   HasOne,
-  NotNull,
+  AllowNull,
   HasMany,
   BelongsTo,
 } from 'sequelize-typescript';
@@ -17,20 +17,20 @@ import { ProductNote } from './productnote.entity';
 
 @Table
 export class Product extends Model<Product> {
-  @NotNull
+  @AllowNull(false)
   @Column({ primaryKey: true, autoIncrement: false, type: DataType.CHAR(10) })
   prod_id: string;
 
-  @NotNull
+  @AllowNull(false)
   @ForeignKey(() => Vendor)
   @Column
   vend_id: number;
 
-  @NotNull
+  @AllowNull(false)
   @Column
   prod_name: string;
 
-  @NotNull
+  @AllowNull(false)
   @Column({ type: DataType.DECIMAL({ precision: 8, scale: 2 }) })
   prod_price: number;
 

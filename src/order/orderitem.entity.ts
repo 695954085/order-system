@@ -4,14 +4,14 @@ import {
   Model,
   ForeignKey,
   DataType,
-  NotNull,
+  AllowNull,
 } from 'sequelize-typescript';
 import { Order } from './order.entity';
 import { Product } from '../product/product.entity';
 
 @Table
 export class OrderItem extends Model<OrderItem> {
-  @NotNull
+  @AllowNull(false)
   @ForeignKey(() => Order)
   @Column({
     primaryKey: true,
@@ -19,23 +19,23 @@ export class OrderItem extends Model<OrderItem> {
   })
   order_num: number;
 
-  @NotNull
+  @AllowNull(false)
   @Column({
     primaryKey: true,
     autoIncrement: false,
   })
   order_item: number;
 
-  @NotNull
+  @AllowNull(false)
   @ForeignKey(() => Product)
   @Column(DataType.CHAR(10))
   prod_id: string;
 
-  @NotNull
+  @AllowNull(false)
   @Column(DataType.INTEGER)
   quantity: number;
 
-  @NotNull
+  @AllowNull(false)
   @Column(DataType.DECIMAL(8,2))
   item_price: number;
 }

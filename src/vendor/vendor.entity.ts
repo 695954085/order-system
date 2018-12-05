@@ -1,13 +1,20 @@
-import { Table, Column, Model, NotNull, DataType, HasMany } from 'sequelize-typescript';
-import { Product } from 'src/product/product.entity';
+import {
+  Table,
+  Column,
+  Model,
+  AllowNull,
+  DataType,
+  HasMany,
+} from 'sequelize-typescript';
+import { Product } from '../product/product.entity';
 
 @Table
 export class Vendor extends Model<Vendor> {
-  @NotNull
-  @Column({ primaryKey: true })
+  @AllowNull(false)
+  @Column({ primaryKey: true, autoIncrement: true })
   vend_id: number;
 
-  @NotNull
+  @AllowNull(false)
   @Column(DataType.CHAR(50))
   vend_name: string;
 

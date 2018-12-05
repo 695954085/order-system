@@ -1,20 +1,28 @@
-import { Table, Column, Model, ForeignKey, BelongsTo, BelongsToMany, NotNull, DataType } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  ForeignKey,
+  BelongsTo,
+  BelongsToMany,
+  AllowNull,
+  DataType,
+} from 'sequelize-typescript';
 import { Customer } from '../customer/customer.entity';
 import { Product } from '../product/product.entity';
 import { OrderItem } from './orderitem.entity';
 
 @Table
 export class Order extends Model<Order> {
-
-  @NotNull
-  @Column({ primaryKey: true })
+  @AllowNull(false)
+  @Column({ primaryKey: true, autoIncrement: true })
   order_num: number;
 
-  @NotNull
+  @AllowNull(false)
   @Column
   order_date: Date;
 
-  @NotNull
+  @AllowNull(false)
   @ForeignKey(() => Customer)
   @Column(DataType.INTEGER)
   cust_id: number;
