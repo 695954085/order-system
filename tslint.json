@@ -7,7 +7,7 @@
         "no-unused-expression": true
     },
     "rules": {
-        "whitespace": [true, "check-branch", "check-operator", "check-typecast"],
+        "whitespace": [true],
         "eofline": false,
         "quotemark": [
             true,
