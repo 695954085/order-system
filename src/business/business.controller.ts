@@ -6,6 +6,8 @@ import { BusinessService } from './business.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from '../auth/roles.decorator';
 import { RoleGuard } from '../auth/role.guard';
+import { productSchema } from './schema/product.schema';
+import { ProductDto } from './dto/product.dto';
 
 @UseGuards(AuthGuard('bearer'))
 @Controller('/v1')
@@ -16,7 +18,14 @@ export class BusinessController {
   @Roles('admin', 'general')
   @UseGuards(RoleGuard)
   @Post('/vendor')
-  create(@Body(new JoiValidationPipe(schema)) vendor: VendorDto) {
+  async create(@Body(new JoiValidationPipe(schema)) vendor: VendorDto) {
     return this.businessService.createVendor(vendor);
+  }
+
+  @Roles('admin', 'general')
+  @UseGuards(RoleGuard)
+  @Post('/product')
+  async createProduct(@Body(new JoiValidationPipe(productSchema)) product: ProductDto){
+    return this.businessService.createProduct(product);
   }
 }
