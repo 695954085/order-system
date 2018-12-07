@@ -26,6 +26,9 @@ export class Product extends Model<Product> {
   @Column
   vend_id: number;
 
+  @BelongsTo(() => Vendor)
+  vendor: Vendor;
+
   @AllowNull(false)
   @Column
   prod_name: string;
@@ -42,7 +45,4 @@ export class Product extends Model<Product> {
 
   @HasOne(() => ProductNote)
   productNotes: ProductNote;
-
-  @BelongsTo(() => Vendor)
-  vendor: Vendor;
 }
