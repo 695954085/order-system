@@ -2,6 +2,8 @@
 export const DATABASE_PROVIDER_TOKEN = 'SequlizeToken';
 // crypto 密钥
 export const SECRET = 'order-system';
+// 数据库操作异常
+export const DATABASE_EXCEPTION = 'database_exception';
 
 // ================================= staff start
 // staff 模块 provider token
@@ -29,3 +31,10 @@ export const VENDORALREADYEXIST = 'vendor_already_exists';
 // vendor添加成功
 export const VENDORINSERTSUCCESS = 'vendor_created_success';
 // ================================ vendor end
+
+// ================================ product start
+export const PRODUCT_PROVIDER_TOKEN = 'ProductReposity';
+export const PRODUCT_NOTE_PROVIDER_TOKEN = 'ProductNoteReposity';
+export const PRODUCTALREADYEXIST = 'product_already_exists';
+export const PRODUCTINSERTSUCCESS = 'product_created_success';
+// ================================ product end
