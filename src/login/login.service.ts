@@ -13,4 +13,8 @@ export class LoginService {
   doRegister(staff: Staff) {
     return this.staffService.register(staff);
   }
+
+  findStaffById(staff_id: string) {
+    return this.staffService.findStaffById(staff_id);
+  }
 }

@@ -61,7 +61,7 @@ export class StaffService {
       return {
         type: SUCCESS_LOGIN,
         message: '登录成功',
-        token,
+        data: token,
       };
     } catch (err) {
       let message = '数据库操作异常';
@@ -94,13 +94,13 @@ export class StaffService {
         return {
           type: STAFFALREADYEXIST,
           message: '该员工已存在',
-          staff_id,
+          data: staff_id,
         };
       }
       return {
         type: SUCCESS_REGISTER,
         message: '成功注册',
-        staff_id,
+        data: staff_id,
       };
     } catch (err) {
       // 数据库操作异常
@@ -125,6 +125,14 @@ export class StaffService {
     return this.staffRepository.findOne({
       where: {
         userName,
+      },
+    });
+  }
+
+  async findStaffById(staff_id: string) {
+    return this.staffRepository.findOne({
+      where: {
+        staff_id,
       },
     });
   }
