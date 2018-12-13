@@ -38,3 +38,9 @@ export const PRODUCT_NOTE_PROVIDER_TOKEN = 'ProductNoteReposity';
 export const PRODUCTALREADYEXIST = 'product_already_exists';
 export const PRODUCTINSERTSUCCESS = 'product_created_success';
 // ================================ product end
+
+// ================================ customer start
+export const CUSTOMER_PROVIDER_TOKEN = 'customerReposity';
+export const CUSTOMERALREADYEXIST = 'customer_already_exists';
+export const CUSTOMERINSERTSUCCESS = 'customer_created_success';
+// ================================ customer end
