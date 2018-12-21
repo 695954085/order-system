@@ -44,3 +44,15 @@ export const CUSTOMER_PROVIDER_TOKEN = 'customerReposity';
 export const CUSTOMERALREADYEXIST = 'customer_already_exists';
 export const CUSTOMERINSERTSUCCESS = 'customer_created_success';
 // ================================ customer end
+
+// ================================ order start
+export const ORDER_PROVIDER_TOKEN = 'product_provider_token';
+export const ORDERALREADYEXIST = 'order_already_exists';
+export const ORDERINSERTSUCCESS = 'order_created_success';
+// ================================ order end
+
+// ================================ orderitem start
+export const ORDER_ITEM_PROVIDER_TOKEN = 'order_ite_provider_token';
+export const ORDERITEMALREADYEXIST = 'order_item_already_exists';
+export const ORDERITEMINSERTSUCCESS = 'order_item_created_success';
+// ================================ orderitem end
