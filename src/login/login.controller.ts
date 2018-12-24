@@ -3,8 +3,6 @@ import { StaffDto } from './dto/login.dto';
 import { JoiValidationPipe } from '../share/joi-validation.pipe';
 import { schema } from './schema/login.schema';
 import { LoginService } from './login.service';
-import * as util from 'util';
-import { AuthGuard } from '@nestjs/passport';
 
 @Controller()
 export class LoginController {

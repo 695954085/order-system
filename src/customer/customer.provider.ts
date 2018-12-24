@@ -1,4 +1,4 @@
-import { CUSTOMER_PROVIDER_TOKEN } from 'src/config/constants';
+import { CUSTOMER_PROVIDER_TOKEN } from '../config/constants';
 import { Customer } from './customer.entity';
 
 export const customerProvider = [

@@ -7,7 +7,6 @@ import {
   BelongsToMany,
   HasOne,
   AllowNull,
-  HasMany,
   BelongsTo,
 } from 'sequelize-typescript';
 import { Vendor } from '../vendor/vendor.entity';
