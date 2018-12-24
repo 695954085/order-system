@@ -6,7 +6,6 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 
-@Injectable()
 export class JoiValidationPipe implements PipeTransform {
   constructor(private readonly schema) {}
 
