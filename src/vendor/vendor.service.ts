@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { Vendor as VendorInterface } from './interface/vendor.interface';
 import { VENDOR_PROVIDER_TOKEN, VENDORALREADYEXIST, VENDORINSERTSUCCESS } from '../config/constants';
 import { Vendor } from './vendor.entity';
+import { Transaction } from 'sequelize';
 
 @Injectable()
 export class VendorService {
@@ -35,5 +36,22 @@ export class VendorService {
       message: '供应商添加成功',
       data: vend_id,
     };
+  }
+
+  async findVendor(params: VendorInterface, t: Transaction) {
+    const { vend_id } = params;
+    if(t) {
+      return this.vendorRepository.findOne({
+        where: {
+          vend_id,
+        },
+        transaction: t,
+      });
+    }
+    return this.vendorRepository.findOne({
+      where: {
+        vend_id,
+      },
+    });
   }
 }

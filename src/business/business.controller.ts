@@ -10,6 +10,7 @@ import { productSchema } from './schema/product.schema';
 import { ProductDto } from './dto/product.dto';
 import { customerSchema } from './schema/customer.schema';
 import { CustomerDto } from './dto/customer.dto';
+import { Order } from '../types/order';
 
 @UseGuards(AuthGuard('bearer'))
 @Controller('/v1')
@@ -37,5 +38,15 @@ export class BusinessController {
   @Post('/customer')
   async createCustomer(@Body(new JoiValidationPipe(customerSchema)) customer: CustomerDto){
     return this.businessService.createCustomer(customer);
+  }
+
+  @Roles('admin','general')
+  @UseGuards(RoleGuard)
+  @Post('/order')
+  async createOrder(@Body() order: Order) {
+    // 首先判断顾客是否存在
+    // 其次判断产品是否存在
+    // 最后判断产品数量是否足够
+    return this.businessService.createOrder(order);
   }
 }

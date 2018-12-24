@@ -7,6 +7,7 @@ import {
 } from '../config/constants';
 import { Product } from './product.entity';
 import { Product as ProductInterface } from './interface/product.interface';
+import { Transaction } from 'sequelize';
 @Injectable()
 export class ProductService {
   constructor(
@@ -14,11 +15,11 @@ export class ProductService {
     private readonly productReposity: typeof Product,
   ) {}
 
-  async insertOneProduct(params: ProductInterface) {
+  async insertOneProduct(params: ProductInterface, t?: Transaction) {
     const { prod_id } = params;
-    let product: Product, created: boolean;
-    try {
-      [product, created] = await this.productReposity.findOrCreate({
+    if (t) {
+      return this.productReposity.findOrCreate({
+        transaction: t,
         where: {
           prod_id,
         },
@@ -26,36 +27,31 @@ export class ProductService {
           ...params,
         },
       });
-    } catch (err) {
-      let message;
-      switch (typeof err) {
-        case 'object':
-          message = err.message;
-          break;
-        case 'string':
-          message = err;
-          break;
-        default:
-          break;
-      }
-      return {
-        type: DATABASE_EXCEPTION,
-        message: '数据库操作异常',
-        data: message,
-      };
     }
-    const prodId = product.prod_id;
-    if (!created) {
-      return {
-        type: PRODUCTALREADYEXIST,
-        message: '产品已经存在',
-        data: prodId,
-      };
+    return this.productReposity.findOrCreate({
+      where: {
+        prod_id,
+      },
+      defaults: {
+        ...params,
+      },
+    });
+  }
+
+  async findProduct(params: ProductInterface, t?: Transaction) {
+    const { prod_id } = params;
+    if (t) {
+      return this.productReposity.findOne({
+        transaction: t,
+        where: {
+          prod_id,
+        },
+      });
     }
-    return {
-      type: PRODUCTINSERTSUCCESS,
-      message: '产品创建成功',
-      data: prodId,
-    };
+    return this.productReposity.findOne({
+      where: {
+        prod_id,
+      },
+    });
   }
 }

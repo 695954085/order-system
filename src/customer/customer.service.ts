@@ -3,9 +3,10 @@ import {
   CUSTOMER_PROVIDER_TOKEN,
   CUSTOMERALREADYEXIST,
   CUSTOMERINSERTSUCCESS,
-} from 'src/config/constants';
+} from '../config/constants';
 import { Customer } from './customer.entity';
 import { Customer as CustomerInterface } from './interface/customer.interface';
+import { Transaction } from 'sequelize';
 
 @Injectable()
 export class CustomerService {
@@ -38,5 +39,15 @@ export class CustomerService {
       message: '客户信息录入成功',
       data: cust_id,
     };
+  }
+
+  async findCustomer(params: CustomerInterface, t?: Transaction) {
+    const { cust_id } = params;
+    return this.customerReposity.findOne({
+      transaction: t,
+      where: {
+        cust_id,
+      },
+    });
   }
 }
