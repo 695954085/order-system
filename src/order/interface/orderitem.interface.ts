@@ -1,5 +1,5 @@
-export interface OrderItemInterface {
-  readonly order_num?: number;
+export interface OrderItem {
+   order_num?: number;
   readonly order_item?: number;
   readonly prod_id?: string;
   readonly quantity?: number;

@@ -3,9 +3,10 @@ import {
   ORDER_ITEM_PROVIDER_TOKEN,
   DATABASE_EXCEPTION,
   ORDERITEMINSERTSUCCESS,
-} from 'src/config/constants';
+} from '../config/constants';
 import { OrderItem } from './orderitem.entity';
-import { OrderItemInterface } from './interface/orderitem.interface';
+import { OrderItem as OrderItemInterface } from './interface/orderitem.interface';
+import { Transaction } from 'sequelize';
 
 @Injectable()
 export class OrderItemService {
@@ -14,35 +15,44 @@ export class OrderItemService {
     private readonly orderitemReposity: typeof OrderItem,
   ) {}
 
-  public async insertOneOrderItem(params: OrderItemInterface) {
-    let orderItem: OrderItem;
-    try {
-      orderItem = await this.orderitemReposity.create({
-        ...params,
-      });
-    } catch (err) {
-      let message: string;
-      switch (typeof err) {
-        case 'object':
-          message = err.message;
-          break;
-        case 'string':
-          message = err;
-          break;
-        default:
-          break;
-      }
-      return {
-        type: DATABASE_EXCEPTION,
-        message: '数据库操作异常',
-        data: message,
-      };
+  public async bulkInsertOrderItem(params: OrderItemInterface[], t?: Transaction) {
+    if(!t) {
+      return this.orderitemReposity.bulkCreate(params);
     }
-    const { order_num, order_item } = orderItem;
-    return {
-      type: ORDERITEMINSERTSUCCESS,
-      message: '订单项创建成功',
-      data: order_num,
-    };
+    return this.orderitemReposity.bulkCreate(params, {
+      transaction: t,
+    });
   }
+
+  // public async insertOneOrderItem(params: OrderItemInterface) {
+  //   let orderItem: OrderItem;
+  //   try {
+  //     orderItem = await this.orderitemReposity.create({
+  //       ...params,
+  //     });
+  //   } catch (err) {
+  //     let message: string;
+  //     switch (typeof err) {
+  //       case 'object':
+  //         message = err.message;
+  //         break;
+  //       case 'string':
+  //         message = err;
+  //         break;
+  //       default:
+  //         break;
+  //     }
+  //     return {
+  //       type: DATABASE_EXCEPTION,
+  //       message: '数据库操作异常',
+  //       data: message,
+  //     };
+  //   }
+  //   const { order_num, order_item } = orderItem;
+  //   return {
+  //     type: ORDERITEMINSERTSUCCESS,
+  //     message: '订单项创建成功',
+  //     data: order_num,
+  //   };
+  // }
 }
