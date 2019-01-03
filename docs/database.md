@@ -83,3 +83,64 @@ select prod_id, prod_price, prod_name from products order by prod_price, prod_na
 select prod_price from products order by prod_price desc limit 1;
 
 ## 过滤数据
+
+### 使用where子句
+
+select prod_name, prod_price from products where prod_price = 2.50;
+
+### 检查单个值
+
+select prod_name, prod_price from products where prod_name = 'fuses';
+
+列出价格小于10美元的所有产品
+
+> select prod_name, prod_price from products where prod_price < 10;
+
+列出价格小于等于10美元的所有产品
+
+> select prod_name, prod_price from products where prod_price <= 10;
+
+列出由供应商1003制造的所有产品
+
+> select vend_id, prod_name from products where vend_id <> 1003;
+
+单引号用来限定字符串，如果将值与串类型的列进行比较，则需要限定引号。
+
+## 范围值检查
+
+检索价格在5美元和10美元之间的所有产品
+
+> select prod_name, prod_price from products where prod_price between 5 and 10;
+
+### 空值检查
+
+返回没有价格的所有产品
+
+> select prod_name from products where prod_price is null;
+
+返回没有地址的顾客id
+
+> select cust_id from customers where cust_email is null;
+
+### and操作符
+
+检索由供应商1003制造且价格小于等于10美元的所有产品的名称和价格。
+
+> select prod_id, prod_price, prod_name from products where vend_id = 1003 and prod_price <= 10;
+
+### or操作符
+
+检索一个指定供应商的所有产品的产品名和价格
+
+> select prod_name, prod_price from products where vend_id = 1002 or vend_id = 1003;
+
+### in操作符
+
+检索供应商1002和1003制造的所有产品
+
+> select prod_name, prod_price from products where vend_id in (1002, 1003) order by prod_name;
+
+列出除1002和1003之外的所有供应商制造的产品
+
+> select prod_name, prod_price from products where vend_id not in (1002, 1003) order by prod_name;
+
