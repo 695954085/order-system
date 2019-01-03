@@ -19,10 +19,4 @@ export class LoginController {
     return this.loginService.doRegister(staff);
   }
 
-  // @UseGuards(AuthGuard('bearer'))
-  // @Get('/staff/:staff_id')
-  // async doGet(@Param('staff_id') staff_id: string, @Req() req) {
-  //   console.log(util.inspect(req.user));
-  //   return this.loginService.findStaffById(staff_id);
-  // }
 }

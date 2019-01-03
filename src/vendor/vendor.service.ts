@@ -12,30 +12,15 @@ export class VendorService {
   ) {}
 
   async insertOneVendor(params: VendorInterface) {
-    const { vend_name } = params;
-    const [vendor, created] = await this.vendorRepository.findOrCreate({
+    return this.vendorRepository.findOrCreate({
       where: {
-        vend_name,
+        vend_name: params.vend_name,
       },
       defaults: {
         ...params,
         vend_id: null,
       },
     });
-    const vend_id = vendor.vend_id;
-    if (!created) {
-      // 该vendor已经存在
-      return {
-        type: VENDORALREADYEXIST,
-        message: '该供应商已经存在',
-        data: vend_id,
-      };
-    }
-    return {
-      type: VENDORINSERTSUCCESS,
-      message: '供应商添加成功',
-      data: vend_id,
-    };
   }
 
   async findVendor(params: VendorInterface, t: Transaction) {

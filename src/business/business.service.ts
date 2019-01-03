@@ -1,13 +1,24 @@
-import { Injectable, Inject, Optional } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { Vendor } from '../vendor/interface/vendor.interface';
 import { VendorService } from '../vendor/vendor.service';
 import { Product } from '../product/interface/product.interface';
 import { ProductService } from '../product/product.service';
 import { CustomerService } from '../customer/customer.service';
 import { Customer } from '../customer/interface/customer.interface';
-import { Order } from '../order/interface/order.interface';
 import { OrderItem } from '../order/interface/orderitem.interface';
-import { DATABASE_PROVIDER_TOKEN, ORDERINSERTSUCCESS, PRODUCTINSERTSUCCESS } from '../config/constants';
+import {
+  DATABASE_PROVIDER_TOKEN,
+  ORDERINSERTSUCCESS,
+  PRODUCTINSERTSUCCESS,
+  VENDORALREADYEXIST,
+  VENDORINSERTSUCCESS,
+  CUSTOMERALREADYEXIST,
+  CUSTOMERINSERTSUCCESS,
+} from '../config/constants';
 import { Sequelize } from 'sequelize-typescript';
 import { OrderService } from '../order/order.service';
 import { OrderItemService } from '../order/orderitem.service';
@@ -15,9 +26,6 @@ import { OrderInterface } from '../types/order';
 
 @Injectable()
 export class BusinessService {
-  // constructor(private readonly vendorService: VendorService, private readonly productService: ProductService, private ) {}
-
-  // @Optional()
   @Inject(DATABASE_PROVIDER_TOKEN)
   private readonly sequelize: Sequelize;
 
@@ -36,57 +44,97 @@ export class BusinessService {
   @Inject(OrderItemService)
   private readonly orderitemService: OrderItemService;
 
-  createVendor(vendor: Vendor) {
-    return this.vendorService.insertOneVendor(vendor);
+  async createVendor(vendor: Vendor) {
+    let vend: Vendor;
+    let created: boolean;
+    try {
+      [vend, created] = await this.vendorService.insertOneVendor(vendor);
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
+    const { vend_id } = vend;
+    if (!created) {
+      return {
+        type: VENDORALREADYEXIST,
+        data: vend_id,
+      };
+    }
+    return {
+      type: VENDORINSERTSUCCESS,
+      data: vend_id,
+    };
+  }
+
+  async createCustomer(customer: Customer) {
+    let cust: Customer, created: boolean;
+    try {
+      [cust, created] = await this.customerService.insertOneCustomer(customer);
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
+    const { cust_id } = cust;
+    if (!created) {
+      return {
+        type: CUSTOMERALREADYEXIST,
+        data: cust_id,
+      };
+    }
+    return {
+      type: CUSTOMERINSERTSUCCESS,
+      data: cust_id,
+    };
   }
 
   async createProduct(product: Product) {
     // 应该首先判断是够存在供应商
     // 然后再在创建产品
     // return this.productService.insertOneProduct(product);
-    return this.sequelize.transaction(t => {
-      return this.vendorService
-        .findVendor(
-          {
-            vend_id: product.vend_id,
+    return this.sequelize
+      .transaction(t => {
+        return this.vendorService
+          .findVendor(
+            {
+              vend_id: product.vend_id,
+            },
+            t,
+          )
+          .then(vendor => {
+            if (!vendor) {
+              // 供应商不存在
+              throw new Error(`供应商不存在`);
+            }
+            // 创建产品
+            return this.productService.insertOneProduct(product, t);
+          })
+          .then(values => {
+            if (!values[1]) {
+              // 创建失败
+              throw new Error('产品创建失败');
+            }
+            return values[0];
+          });
+      })
+      .then(value => {
+        const { prod_id, prod_name } = value;
+        return {
+          type: PRODUCTINSERTSUCCESS,
+          message: '产品添加成功',
+          data: {
+            prod_id,
+            prod_name,
           },
-          t,
-        )
-        .then(vendor => {
-          if (!vendor) {
-            // 供应商不存在
-            throw new Error(`供应商不存在`);
-          }
-          // 创建产品
-          return this.productService.insertOneProduct(product, t);
-        })
-        .then(values => {
-          if (!values[1]) {
-            // 创建失败
-            throw new Error('产品创建失败');
-          }
-          return values[0];
-        });
-    }).then(value => {
-      const { prod_id , prod_name } = value;
-      return {
-        type: PRODUCTINSERTSUCCESS,
-        message: '产品添加成功',
-        data: {
-          prod_id,
-          prod_name,
-        },
-      };
-    }).catch(err => {
-    });
-  }
-
-  createCustomer(customer: Customer) {
-    return this.customerService.insertOneCustomer(customer);
+        };
+      })
+      .catch(err => {
+        return {
+          type: '产品创建失败',
+          data: err,
+        };
+      });
   }
 
   async createOrder(parmas: OrderInterface) {
-    const {order, orderItems } = parmas;
+    const { order, orderItems } = parmas;
     let order_num: number;
     return this.sequelize
       .transaction(t => {
@@ -174,7 +222,10 @@ export class BusinessService {
         };
       })
       .catch(err => {
-        console.log(err);
+        return {
+          type: '订单创建失败',
+          data: JSON.stringify(err),
+        };
       });
   }
 }

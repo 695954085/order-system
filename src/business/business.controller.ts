@@ -26,18 +26,18 @@ export class BusinessController {
 
   @Roles('admin', 'general')
   @UseGuards(RoleGuard)
+  @Post('/customer')
+  async createCustomer(@Body(new JoiValidationPipe(customerSchema)) customer: CustomerDto){
+    return this.businessService.createCustomer(customer);
+  }
+
+  @Roles('admin', 'general')
+  @UseGuards(RoleGuard)
   @Post('/product')
   async createProduct(
     @Body(new JoiValidationPipe(productSchema)) product: ProductDto,
   ) {
     return this.businessService.createProduct(product);
-  }
-
-  @Roles('admin', 'general')
-  @UseGuards(RoleGuard)
-  @Post('/customer')
-  async createCustomer(@Body(new JoiValidationPipe(customerSchema)) customer: CustomerDto){
-    return this.businessService.createCustomer(customer);
   }
 
   @Roles('admin','general')

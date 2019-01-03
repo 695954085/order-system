@@ -17,7 +17,7 @@ export class CustomerService {
 
   async insertOneCustomer(params: CustomerInterface) {
     const { cust_name } = params;
-    const [customer, created] = await this.customerReposity.findOrCreate({
+    return this.customerReposity.findOrCreate({
       where: {
         cust_name,
       },
@@ -25,20 +25,6 @@ export class CustomerService {
         ...params,
       },
     });
-    const { cust_id } = customer;
-    if (!created) {
-      // 用户已存在
-      return {
-        type: CUSTOMERALREADYEXIST,
-        message: '客户信息已存在',
-        data: cust_id,
-      };
-    }
-    return {
-      type: CUSTOMERINSERTSUCCESS,
-      message: '客户信息录入成功',
-      data: cust_id,
-    };
   }
 
   async findCustomer(params: CustomerInterface, t?: Transaction) {
