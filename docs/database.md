@@ -144,3 +144,100 @@ select prod_name, prod_price from products where prod_name = 'fuses';
 
 > select prod_name, prod_price from products where vend_id not in (1002, 1003) order by prod_name;
 
+## 用通配符进行过滤
+
+### 百分号通配符
+
+找出所有以词jet开头的产品
+
+> select prod_id, prod_name from products where prod_name like 'jet%';
+
+找出以s起头以e结尾的所有产品
+
+> select prod_name from products where prod_name 's%e';
+
+### 下划线通配符 下划线只匹配单个字符而不是多个字符
+
+
+> select prod_id, prod_name from products where prod_name like '_ ton anvil'
+
+## 使用正则表达式进行匹配
+
+检索列prod_name包含文本1000的所有行
+
+> select prod_name from products where prod_name regexp '1000' order by prod_name;
+
+### 进行or匹配
+
+select prod_name from products where prod_name regexp '1000|2000' order by prod_name;
+
+select prod_name from products where prod_name regexp '[1-5] Ton' order by prod_name;
+
+select vend_name from vendors where vend_name regexp '\\.' order by vend_name;
+
+\或\\? 多数正则表达式实现使用单个反斜杠转义特殊字符，以便能使用这些字符本身。但mysql要求两个反斜杠。
+
+## 计算字段
+
+存储在表中的数据都不是应用程序所需要的。我们需要直接从数据库中检索出转换，计算或格式化的数据；而不是检索出数据，然后再在客户机应用程序或报告程序中重新格式化
+
+### 拼接字段
+
+vendors表包含供应商和位置信息。加入要生成一个供应商报表，需要在供应商的名字中按照name(location)这样的格式列出供应商的位置。
+
+> select concat(vend_name, ' (', vend_country, ')') from vendors order by vend_name;
+
+> select concat(rtrim(vend_name), ' (', rtrim(vend_country), ')') from vendors order by vend_name;
+
+rtrim()函数去掉值右边的所有空格。
+
+### 执行算术计算
+
+汇总物品的价格
+
+> select prod_id, quantity, item_price, quantity*item_price as expanded_price from orderitems where order_num = 20005;
+
+## 使用数据处理函数
+
+### 日期函数
+
+检索出一个订单记录，该订单记录的order_date为2005-09-01
+
+> select cust_id, order_num from orders where order_date = '2005-09-01';
+
+> select cust_id, order_num from orders where Date(order_date) = '2019-01-03';
+
+检索出2005年9月下的所有订单
+
+> select cust_id, order_num from orders where date(order_date) between '2005-09-01' and '2005-09-30';
+> select cust_id, order_num from orders wher year(order_date) = 2005 and month(order_date) = 9;
+
+## 汇总数据
+
+### 聚集函数
+
+返回products表中所有产品的平均价格
+
+> select avg(prod_price) as avg_price from products;
+
+返回特定供应商所提供的产品的平均价格
+
+> select avg(prod_price) as avg_price from products where vend_id = 1003;
+
+返回customers表中客户的总数
+
+> select count(*) as num_cust from customers;
+
+返回具有电子邮件地址的客户计数
+
+> select count(cust_email) as num_cust from customers;
+
+
+返回products表中最贵的物品的价格
+
+> select max(prod_price) as max_price from products;
+
+返回products表中最便宜的物品的价格
+
+> select min(prod_price) as min_price from products;
+
