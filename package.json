@@ -33,12 +33,14 @@
     "mysql2": "^1.6.4",
     "passport": "^0.4.0",
     "passport-http-bearer": "^1.0.1",
+    "path-to-regexp": "^2.4.0",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
     "rxjs": "^6.2.2",
     "sequelize": "^4.41.2",
     "sequelize-typescript": "^0.6.6",
-    "typescript": "^3.0.1"
+    "typescript": "^3.0.1",
+    "winston": "^3.1.0"
   },
   "devDependencies": {
     "@nestjs/testing": "^5.4.0",

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-// import { JoiValidationPipe } from './joi-validation.pipe';
+import { MyLogger } from './logger.service';
 
 @Module({
-  // providers: [JoiValidationPipe],
-  // exports: [JoiValidationPipe],
+  providers: [MyLogger],
+  exports: [MyLogger],
 })
 export class ShareModule {}
