@@ -241,3 +241,34 @@ rtrim()函数去掉值右边的所有空格。
 
 > select min(prod_price) as min_price from products;
 
+orderitems表包含订单中世纪的物品，每个物品有相应的数量。检索所订购物品的总数
+
+> select sum(quantity) as items_ordered from orderitems where order_num = 20005;
+
+合计每项物品的item_price*quantity，得出总的订单金额。
+
+> select sum(item_price*quantity) as total_price from orderitems where order_num = 20005;
+
+返回供应商提供的产品的平均价格
+
+> select avg(distinct prod_price) as avg_price from products where vend_id = 1003;
+
+## 分组数据
+
+### 数据分组
+
+返回供应商1003提供的产品数目
+
+> select count(*) as num_prods from products where vend_id = 1003;
+
+返回每隔供应商提供的产品数目
+
+> select vend_id, count(*) as num_prods from products group by vend_id;
+
+> select cust_id, count(*) as orders from orders group by cust_id having count(*) >= 2;
+
+having非常类似于where where过滤行，having过滤分组
+
+列出具有2个(含)以上，价格为10以上的产品的供应商。
+
+> select vend_id, count(*) as num_prods from products where prod_pice >= 10 group by vend_id having count(*) >= 2;
