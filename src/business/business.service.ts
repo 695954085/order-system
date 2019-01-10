@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { Vendor } from '../vendor/interface/vendor.interface';
 import { VendorService } from '../vendor/vendor.service';
-import { Product } from '../product/interface/product.interface';
 import { ProductService } from '../product/product.service';
 import { CustomerService } from '../customer/customer.service';
 import { Customer } from '../customer/interface/customer.interface';
@@ -23,6 +22,7 @@ import { Sequelize } from 'sequelize-typescript';
 import { OrderService } from '../order/order.service';
 import { OrderItemService } from '../order/orderitem.service';
 import { OrderInterface } from '../types/order';
+import { Product, ProductSearch } from '../product/interface/product.interface';
 
 @Injectable()
 export class BusinessService {
@@ -227,5 +227,20 @@ export class BusinessService {
           data: JSON.stringify(err),
         };
       });
+  }
+
+  async getProducts(parmas: ProductSearch) {
+    try {
+      const products = await this.productService.findProducts(parmas);
+      return {
+        type: '成功查询产品',
+        data: products,
+      };
+    } catch (err) {
+      return {
+        type: '查询产品失败',
+        data: JSON.stringify(err),
+      };
+    }
   }
 }

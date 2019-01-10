@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
 
 export const customerSchema = Joi.object().keys({
-  cust_id: Joi.number().min(11).max(11).positive().integer(),
+  cust_id: Joi.number().min(1).max(11).positive().integer(),
   cust_name: Joi.string().max(50).required(),
   cust_address: Joi.string().max(50),
   cust_city: Joi.string().max(50),
