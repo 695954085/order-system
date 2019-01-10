@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param, Get, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { StaffDto } from './dto/login.dto';
 import { JoiValidationPipe } from '../share/joi-validation.pipe';
 import { schema } from './schema/login.schema';
@@ -18,5 +18,4 @@ export class LoginController {
   async doRegister(@Body(new JoiValidationPipe(schema)) staff: StaffDto) {
     return this.loginService.doRegister(staff);
   }
-
 }
