@@ -17,6 +17,7 @@ import { Staff as StaffInterface } from './interface/staff.interface';
 import * as bcrypt from 'bcrypt';
 import * as jsonwebtoken from 'jsonwebtoken';
 import * as bluebird from 'bluebird';
+import { Response} from '../share/response';
 const jsonwebtokenAsync: any = bluebird.promisifyAll(jsonwebtoken);
 
 @Injectable()
@@ -26,7 +27,7 @@ export class StaffService {
     private readonly staffRepository: typeof Staff,
   ) {}
 
-  async login(params: StaffInterface) {
+  async login(params: StaffInterface): Promise<Response> {
     const { userName, password } = params;
     try {
       const staff = await this.staffRepository.findOne({
