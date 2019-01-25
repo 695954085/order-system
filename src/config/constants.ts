@@ -21,6 +21,8 @@ export const SUCCESS_REGISTER = 'success_register';
 export const FAIL_PASSWORD_ERROR = 'fail_password_wrong';
 // 登录成功
 export const SUCCESS_LOGIN = 'success_login';
+// wrong token
+export const WRONG_TOKEN = 'wrong_token';
 // ================================ login end
 
 // ================================ vendor start

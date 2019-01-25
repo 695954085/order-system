@@ -12,5 +12,6 @@ import { Roles } from './roles.decorator';
     provide: Roles,
     useValue: Roles,
   }],
+  exports: [AuthService],
 })
 export class AuthModule {}
