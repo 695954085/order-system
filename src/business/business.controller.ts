@@ -38,6 +38,17 @@ export class BusinessController {
   @ApiBearerAuth()
   @Roles('admin', 'general')
   @UseGuards(RoleGuard)
+  @Get('/vendor')
+  async vendor() {
+    return this.businessService.getVendor();
+  }
+
+  @ApiOkResponse({
+    type: Response,
+  })
+  @ApiBearerAuth()
+  @Roles('admin', 'general')
+  @UseGuards(RoleGuard)
   @Post('/customer')
   async createCustomer(
     @Body(new JoiValidationPipe(customerSchema)) customer: CustomerDto,

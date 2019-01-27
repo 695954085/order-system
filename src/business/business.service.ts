@@ -17,6 +17,8 @@ import {
   VENDORINSERTSUCCESS,
   CUSTOMERALREADYEXIST,
   CUSTOMERINSERTSUCCESS,
+  VENDORQUERYSUCCESS,
+  VENDORQUERYFAIL,
 } from '../config/constants';
 import { Sequelize } from 'sequelize-typescript';
 import { OrderService } from '../order/order.service';
@@ -63,6 +65,21 @@ export class BusinessService {
       type: VENDORINSERTSUCCESS,
       data: vend_id,
     };
+  }
+
+  async getVendor() {
+    try {
+      const vendors = await this.vendorService.getVendor();
+      return {
+        type: VENDORQUERYSUCCESS,
+        data: vendors,
+      };
+    } catch (err) {
+      return {
+        type: VENDORQUERYFAIL,
+        data: JSON.stringify(err),
+      };
+    }
   }
 
   async createCustomer(customer: Customer) {

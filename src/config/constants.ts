@@ -32,6 +32,10 @@ export const VENDOR_PROVIDER_TOKEN = 'VendorReposity';
 export const VENDORALREADYEXIST = 'vendor_already_exists';
 // vendor添加成功
 export const VENDORINSERTSUCCESS = 'vendor_created_success';
+// query success
+export const VENDORQUERYSUCCESS = 'vendor_query_success';
+// query fail
+export const VENDORQUERYFAIL = 'vendor_query_fail';
 // ================================ vendor end
 
 // ================================ product start
